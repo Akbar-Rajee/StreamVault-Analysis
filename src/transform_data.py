@@ -80,5 +80,6 @@ movies_df.to_csv(
     index=False
 )
 
-print(movies_df.shape)
-print(movies_df.head())
+print(
+    f"Processed {len(movies_df)} movies."
+)
