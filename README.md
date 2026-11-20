@@ -92,7 +92,7 @@ The first run requires data acquisition from TMDb.
 Execute:
 
 ```powershell
-python src/acquire_data.py
+python pipeline/acquire_data.py
 ```
 
 This step:
@@ -118,7 +118,7 @@ data/processed/reconciliation.csv
 After acquisition has completed, execute:
 
 ```powershell
-python src/pipeline.py
+python pipeline/pipeline.py
 ```
 
 The pipeline performs:
@@ -139,57 +139,10 @@ outputs/
 
 ---
 
-# Alternative Manual Execution
-
-Run each step separately:
-
-## Transform Raw Data
-
-```powershell
-python src/transform_data.py
-```
-
-## Extract Directors
-
-```powershell
-python src/extract_directors.py
-```
-
-## Extract Actors
-
-```powershell
-python src/extract_actors.py
-```
-
-## Run Analysis
-
-```powershell
-python src/run_analysis.py
-```
-
----
-
-# Validation
-
-## Data Validation
-
-```powershell
-python src/validation_checks.py
-```
-
-Checks:
-
-- Movie coverage
-- Director coverage
-- Actor coverage
-- Reconciliation consistency
-
----
-
 ## Pipeline Testing
 
 ```powershell
-python src/test_pipeline.py
+python tests/test_pipeline.py
 ```
 
 Tests:
