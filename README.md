@@ -40,9 +40,7 @@ StreamVault Analysis
 ├── docs
 │   └── adr
 ├── outputs
-│
-├── docs
-│   └── adr
+├── pipeline
 │
 ├── src
 └── tests
@@ -86,90 +84,101 @@ Activate:
 ```powershell
 pip install -r requirements.txt
 ```
-
 ---
 
-## Configure Environment Variables
+# First-Time Execution
 
-Create a `.env` file:
+The first run requires data acquisition from TMDb.
 
-```text
-TMDB_API_KEY=your_api_key_here
-```
-
-Do not commit API keys to version control.
-
----
-
-# Execution Order
-
-## 1. Test Connectivity
-
-```powershell
-python src/test_connection.py
-```
-
-Verifies access to TMDb.
-
----
-
-## 2. Acquire Data
+Execute:
 
 ```powershell
 python src/acquire_data.py
 ```
 
+This step:
+
+- Reads the candidate list
+- Retrieves movie metadata
+- Retrieves movie credits
+- Stores raw JSON responses
+- Generates a reconciliation report
+
 Outputs:
 
-- Raw movie details JSON
-- Raw credits JSON
-- Reconciliation table
+```text
+data/raw/details/
+data/raw/credits/
+data/processed/reconciliation.csv
+```
 
 ---
 
-## 3. Transform Data
+# Running the Analysis Pipeline
+
+After acquisition has completed, execute:
+
+```powershell
+python src/pipeline.py
+```
+
+The pipeline performs:
+
+1. Movie transformation
+2. Director extraction
+3. Actor extraction
+4. Analytical processing
+
+without making additional API requests.
+
+Outputs are written to:
+
+```text
+data/processed/
+outputs/
+```
+
+---
+
+# Alternative Manual Execution
+
+Run each step separately:
+
+## Transform Raw Data
 
 ```powershell
 python src/transform_data.py
 ```
 
-Outputs:
-
-- movies.csv
-
----
-
-## 4. Extract Directors
+## Extract Directors
 
 ```powershell
 python src/extract_directors.py
 ```
 
-Outputs:
-
-- directors.csv
-
----
-
-## 5. Extract Lead Actors
+## Extract Actors
 
 ```powershell
 python src/extract_actors.py
 ```
 
-Outputs:
+## Run Analysis
 
-- actors.csv
+```powershell
+python src/run_analysis.py
+```
 
 ---
 
-## 6. Validate Dataset Integrity
+# Validation
+
+## Data Validation
 
 ```powershell
-python tests/validation_checks.py
+python src/validation_checks.py
 ```
 
-Verifies:
+Checks:
 
 - Movie coverage
 - Director coverage
@@ -178,17 +187,19 @@ Verifies:
 
 ---
 
-## 7. Run Analysis
+## Pipeline Testing
 
 ```powershell
-python src/run_analysis.py
+python src/test_pipeline.py
 ```
 
-Produces:
+Tests:
 
-- Franchise vs standalone comparison
-- Time-window comparison
-- Median sensitivity analysis
+- Unique movie IDs
+- Join consistency
+- No movie loss during transformation
+- Reconciliation integrity
+- Metric generation
 
 ---
 
