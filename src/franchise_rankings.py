@@ -2,8 +2,9 @@ import pandas as pd
 
 movies = pd.read_csv("data/processed/movies.csv")
 
+print(movies.columns.tolist())
 franchises = movies[
-    movies["is_franchise"] == True
+    movies["is_franchise"]
 ]
 
 summary = (
