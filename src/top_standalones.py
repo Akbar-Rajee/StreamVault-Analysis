@@ -3,7 +3,7 @@ import pandas as pd
 movies = pd.read_csv("data/processed/movies.csv")
 
 standalones = movies[
-    movies["is_franchise"] == False
+    ~movies["is_franchise"]
 ]
 
 standalones = standalones.sort_values(

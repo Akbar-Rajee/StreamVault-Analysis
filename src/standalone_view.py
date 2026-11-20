@@ -25,9 +25,17 @@ pd.set_option("display.max_colwidth", 40)
 print(view.to_string(index=False))
 
 # Standalone benchmark with and without the named-talent films
+# Director names selected from the
+# highest-performing recurring director signals.
+
+NOTABLE_DIRECTORS = [
+    "Christopher Nolan",
+    "Steven Spielberg",
+    "Robert Zemeckis"
+]
 named = directors.loc[
     directors["director"].isin(
-        ["Christopher Nolan", "Steven Spielberg", "Robert Zemeckis"]
+        NOTABLE_DIRECTORS
     ),
     "movie_id",
 ]

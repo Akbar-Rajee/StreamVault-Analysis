@@ -24,12 +24,16 @@ for file_name in os.listdir(credits_folder):
     cast = data.get("cast", [])
 
     # Lead actor = first billed actor
-    if len(cast) > 0:
 
-        actors.append({
-            "movie_id": movie_id,
-            "actor": cast[0]["name"]
-        })
+    actor_name = None
+
+    if len(cast) > 0:
+        actor_name = cast[0]["name"]
+
+    actors.append({
+        "movie_id": movie_id,
+        "actor": actor_name
+    })
 
 actors_df = pd.DataFrame(actors)
 

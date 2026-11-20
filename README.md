@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # StreamVault-Analysis
 =======
 # StreamVault Licensing Analysis
@@ -316,4 +315,3 @@ The analysis was designed to be rerun on future candidate lists with minimal mod
 Raw acquisition data is separated from transformed datasets, enabling reprocessing without repeating API requests.
 
 All major assumptions and decisions are documented within ADRs and Decision Notes.
->>>>>>> 092da17 (Update of StreamVault license lab)

@@ -1,6 +1,7 @@
 import os
 import json
 import pandas as pd
+import numpy as np
 
 details_folder = "data/raw/details"
 
@@ -41,32 +42,38 @@ for file_name in os.listdir(details_folder):
     })
 
 movies_df = pd.DataFrame(movies)
-
-movies_df["profit"] = (
-    movies_df["revenue"] -
-    movies_df["budget"]
+movies_df["is_franchise"] = (
+    movies_df["collection_id"].notna()
 )
 
-# Avoid Division by Zero
-import numpy as np
+movies_df["is_franchise"] = (
+    movies_df["collection_id"].notna()
+)
+
+movies_df["year"] = pd.to_datetime(
+    movies_df["release_date"],
+    errors="coerce"
+).dt.year
+movies_df["missing_budget"] = (
+    movies_df["budget"] <= 0
+)
+
+movies_df["missing_revenue"] = (
+    movies_df["revenue"] <= 0
+)
+
+movies_df["profit"] = np.where(
+    (movies_df["budget"] > 0)
+    & (movies_df["revenue"] > 0),
+    movies_df["revenue"] - movies_df["budget"],
+    np.nan
+)
 
 movies_df["roi"] = np.where(
     movies_df["budget"] > 0,
     movies_df["profit"] / movies_df["budget"],
     np.nan
 )
-
-# Create Franchise Flag
-movies_df["is_franchise"] = (
-    movies_df["collection_id"]
-    .notna()
-)
-
-# Create Release Year
-movies_df["year"] = pd.to_datetime(
-    movies_df["release_date"]
-).dt.year
-
 
 movies_df.to_csv(
     "data/processed/movies.csv",
